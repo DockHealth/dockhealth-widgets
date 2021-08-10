@@ -6,5 +6,5 @@ const callback = (res) => {
     console.log(res)
 }
 
-dock.events(['stateChanged', 'itemChanged'], callback);
+dock.events(['stateChanged', 'itemChanged'], callback)
 

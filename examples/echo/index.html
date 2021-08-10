@@ -2,7 +2,7 @@
 <html lang='en'>
     <head>
         <meta charset='utf8'></meta>
-        <script type='module' src ='./index.js'></script>
+        <script type='module' src ='../../dist/main.js'></script>
     </head>
     <body>
         <button id='fireStateChangeButton' onclick='onStateChangeClicked()'>Fire State Change</button>
@@ -10,4 +10,44 @@
         <div />
         <textarea id='logAreaId' cols='100' rows='25'></textarea>
     </body>
+    <script>
+        let logArea = null
+        let sdk = null
+
+        window.onload = function () {
+            console.log('onLoad')
+            logArea = document.getElementById('logAreaId')
+            sdk = window.dockHealthWidgetSdk()
+            sdk.onStateChanged(handleOnStateChanged)
+            sdk.onItemChanged(handleOnItemChanged)
+        }
+
+        const handleOnStateChanged = (newState) => {
+            log(`handleOnStateChanged: ${JSON.stringify(newState, null, 2)}`)
+        }
+
+        const onStateChangeClicked = () => {
+            log('onStateChangeClicked')
+            sdk._fireStateChanged({ name: 'state name', value: 'state value' })
+        }
+
+        const handleOnItemChanged = (newItem) => {
+            log(`handleOnItemChanged: ${JSON.stringify(newItem, null, 2)}`)
+        }
+
+        const onItemChangeClicked = () => {
+            log('onItemChangeClicked')
+            sdk._fireItemChanged({ name: 'item name', value: 'item value' })
+        }
+
+        const log = (payload) => {
+            console.log(payload)
+            const existing = logArea.value
+            if (existing) {
+                logArea.value = existing + '\n' + payload
+            } else {
+                logArea.value = payload
+            }
+        }
+    </script>
 </html>

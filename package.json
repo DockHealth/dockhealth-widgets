@@ -20,6 +20,6 @@
     },
     "scripts": {
         "echo": "webpack serve --entry ./examples/echo/index.js --mode=development",
-        "build": "webpack"
+        "build": "webpack --mode=production"
     }
 }
