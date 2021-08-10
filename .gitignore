@@ -102,3 +102,11 @@ dist
 
 # TernJS port file
 .tern-port
+
+# IntelliJ
+.idea/
+*.iml
+
+# Ignore ALL env files EXCEPT the sample.
+.env.*
+!.env.sample
