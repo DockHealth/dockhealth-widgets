@@ -1,0 +1,62 @@
+<!DOCTYPE html />
+<html lang='en'>
+    <head>
+        <title>dock.html - Dock Health Widget SDK Echo Example</title>
+        <meta charset='utf8'></meta>
+        <script type='module' src ='https://dockhealth.ngrok.io/dist/dockhealth-widget-sdk-internal.js'></script>
+    </head>
+    <body>
+        <p>Dock Health</p>
+        <button id='fireStateChangeButton' onclick='onStateChangeClicked()'>Fire State Change</button>
+        <button id='fireItemChangeButton' onclick='onItemChangeClicked()'>Fire Item Change</button>
+        <div />
+        <textarea id='logId' cols='100' rows='20'></textarea>
+        <p>Widget</p>
+        <iframe id='widgetId' height='500px' width='900px'></iframe>
+    </body>
+    <script>
+        let log = null
+        let sdk = null
+        let widget = null
+        // Note: PostMessage requires that the domain include ONLY the protocol, domain, and optionally, port.
+        // It cannot contain the remainder of the widget url.
+        const widgetDomain = 'https://dockhealth-widget.ngrok.io'
+        const widgetUrl = widgetDomain + '/examples/echo/widget.html'
+
+        window.onload = function () {
+            log = document.getElementById('logId')
+            logMsg('dock.html: onLoad()')
+            
+            const iframe = document.getElementById('widgetId')
+            iframe.src = widgetUrl            
+            widget = iframe.contentWindow
+        
+            sdk = window.dockHealthWidgetSdkInternal({ target: widget, targetOrigin: widgetDomain })
+            sdk.onNavigate(handleOnNavigate)    
+        }
+
+        const handleOnNavigate = (location) => {
+            logMsg(`handleOnNavigate: ${JSON.stringify(location, null, 2)}`)
+        }
+
+        const onStateChangeClicked = () => {
+            logMsg('onStateChangeClicked')
+            sdk.fireStateChanged({ name: 'state name', value: 'state value' })
+        }
+
+        const onItemChangeClicked = () => {
+            logMsg('onItemChangeClicked')
+            sdk.fireItemChanged({ name: 'item name', value: 'item value' })
+        }
+
+        const logMsg = (payload) => {
+            console.log(payload)
+            const existing = log.value
+            if (existing) {
+                log.value = existing + '\n' + payload
+            } else {
+                log.value = payload
+            }
+        }
+    </script>
+</html>
