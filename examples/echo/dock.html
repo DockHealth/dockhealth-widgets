@@ -1,0 +1,54 @@
+<!DOCTYPE html />
+<html lang='en'>
+    <head>
+        <title>dock.html - Dock Health Widget SDK Echo Example</title>
+        <meta charset='utf8'></meta>
+        <script type='module' src ='/dist/main.js'></script>
+    </head>
+    <body>
+        <p>Dock Health</p>
+        <button id='fireStateChangeButton' onclick='onStateChangeClicked()'>Fire State Change</button>
+        <button id='fireItemChangeButton' onclick='onItemChangeClicked()'>Fire Item Change</button>
+        <div />
+        <textarea id='logId' cols='100' rows='20'></textarea>
+        <p>Widget</p>
+        <iframe id='widgetId' height='500px' width='900px' src='widget.html'></iframe>
+    </body>
+    <script>
+        let widget = null
+        let log = null
+        let sdk = null
+
+        window.onload = function () {
+            console.log('onLoad')
+            widget = document.getElementById('widgetId').contentWindow
+            log = document.getElementById('logId')
+            sdk = window.dockHealthWidgetSdk()
+            sdk.onNavigate(handleOnNavigate)
+        }
+
+        const handleOnNavigate = (location) => {
+            logMsg(`handleOnNavigate: ${JSON.stringify(location, null, 2)}`)
+        }
+
+        const onStateChangeClicked = () => {
+            logMsg('onStateChangeClicked')
+            sdk._fireStateChanged({ name: 'state name', value: 'state value' })
+        }
+
+        const onItemChangeClicked = () => {
+            logMsg('onItemChangeClicked')
+            sdk._fireItemChanged({ name: 'item name', value: 'item value' })
+        }
+
+        const logMsg = (payload) => {
+            console.log(payload)
+            const existing = log.value
+            if (existing) {
+                log.value = existing + '\n' + payload
+            } else {
+                log.value = payload
+            }
+        }
+    </script>
+</html>

@@ -10,6 +10,9 @@ class DockHealthWidgetSdk {
         this.onItemChanged = this.onItemChanged.bind(this)
         this._fireItemChanged = this._fireItemChanged.bind(this)
 
+        this.onNavigate = this.onNavigate.bind(this)
+        this.navigate = this.navigate.bind(this)
+
         this._receiveMessage = this._receiveMessage.bind(this)
         window.addEventListener('message', this._receiveMessage, false)
     }
@@ -22,6 +25,16 @@ class DockHealthWidgetSdk {
     onItemChanged(callback) {
         console.log('onItemChanged')
         this._addListener('onItemChanged', callback)
+    }
+
+    onNavigate(callback) {
+        console.log('onNavigate')
+        this._addListener('onNavigate', callback)
+    }
+
+    navigate(newLocation) {
+        console.log('navigate')
+        this._sendMessage('onNavigate', newLocation)
     }
 
     _fireStateChanged(newState) {
@@ -72,15 +85,18 @@ class DockHealthWidgetSdk {
     }
 
     _addListener(key, callback) {
+        console.log('Adding listener: ' + key)
         this.listeners[key] = this.listeners[key] || []
         this.listeners[key].push(callback)
     }
 
     _removeEventListener() {
+        console.log('Removing listener.')
         window.removeEventListener('message', this._receiveMessage, false)
     }
 
     _clearListeners() {
+        console.log('Clearing listeners.')
         this.listeners = []
     }
 

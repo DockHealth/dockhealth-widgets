@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>widget.html - Dock Health Widget SDK Echo Example</title>	
+        <meta charset='utf-8'></meta>
+    </head>
+    <body>
+        <button id='fireNavigateButton' onclick='onNavigateClicked()'>Fire Navigate</button>
+        <textarea id='logId' cols='100' rows='20'></textarea>
+    </body>
+    <script>
+        let log = null
+        let sdk = null
+
+        window.onload = function () {
+            console.log('onLoad')
+            log = document.getElementById('logId')
+            sdk = window.parent.dockHealthWidgetSdk()
+            sdk.onStateChanged(handleOnStateChanged)
+            sdk.onItemChanged(handleOnItemChanged)
+        }
+
+        const handleOnStateChanged = (newState) => {
+            logMsg(`handleOnStateChanged: ${JSON.stringify(newState, null, 2)}`)
+        }
+
+        const handleOnItemChanged = (newItem) => {
+            logMsg(`handleOnItemChanged: ${JSON.stringify(newItem, null, 2)}`)
+        }
+
+        const onNavigateClicked = () => {
+            logMsg('onNavigateClicked')
+            sdk.navigate({ type: 'patient', id: '1234' })
+        }
+
+        const logMsg = (payload) => {
+            console.log(payload)
+            const existing = log.value
+            if (existing) {
+                log.value = existing + '\n' + payload
+            } else {
+                log.value = payload
+            }
+        }
+    </script>
+</html>

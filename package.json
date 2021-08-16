@@ -19,7 +19,7 @@
         "webpack-dev-server": "^3.11.2"
     },
     "scripts": {
-        "echo": "webpack serve --entry ./examples/echo/index.js --mode=development",
-        "build": "webpack --mode=production"
+        "build": "webpack --mode=production",
+        "echo": "serve ."
     }
 }
