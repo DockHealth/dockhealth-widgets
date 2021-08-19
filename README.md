@@ -9,12 +9,6 @@ Widgets allow third party developers to embed UI components into Dock. These com
 **Form Completion**: Widget click within Dock causes presentation of inline form to capture additional data into third party system. Widget callback to Dock upon form completion causes completion of task.
 
 **Document Review**: Inline presentation of medical records to be reviewed by user. User completion of review triggers event in Dock, possibly leading to task completion. 
-
-## Protocol
-
-Widget protocol follows the `Window.postMessage()` standard: <https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage>
-
-Dock widget events conform to the `MessageEvent` schema: <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent>
  
 ## Widget Types
 
@@ -30,49 +24,31 @@ Listens for Dock client-side events generated in the UI hosting the widget. Clie
 
 Events will be one of the following types:
 
-`stateChanged`: Sent whenever the current state of the Dock UI has meaningfully changed. In the case of `Task` widgets, this event will be sent whenever the selected task changes. In the case of `Patient` widgets, this event will be sent whenever the selected patient changes. All `stateChanged` events will include the item that changed, as well as reference attributes like current user, parent task, etc. This event will be sent to a widget whenever it is loaded so that it can properly initialize itself based on the current state.
+`onStateChanged`: Sent whenever the current state of the Dock UI has meaningfully changed. In the case of `Task` widgets, this event will be sent whenever the selected task changes. In the case of `Patient` widgets, this event will be sent whenever the selected patient changes. All `onStateChanged` events will include the item that changed, as well as reference attributes like current user, parent task, etc. This event will be sent to a widget whenever it is loaded so that it can properly initialize itself based on the current state.
 
-`stateWillChange` (FUTURE): Sent whenever the current state of the Dock UI is about to change – for example, when the user is about to navigate away from the current task or patient. This event will provide the widget the opportunity to prevent the navigation until data is saved, etc. The event will include (if possible), the item to which the user is navigating, as well as all reference attributes like current user, etc. 
-
-`itemChanged`: Sent whenever an attribute of the selected item has meaningfully changed. In the case of `Task` widgets, this event will be sent whenever an attribute of the selected task changes. In the case of `Patient` widgets, this event will be send whenever an attribute of the selected patient changes. The event will include the item that has changed. NOTE: Dock will not send diffs – it is the responsibility of the widget to determine diffs via the initial stateChanged event and subsequent itemChanged events.
-
-`itemWillChange` (FUTURE): Sent whenever an attribute of the selected item is about to change – for example, when the user is about to assign a task to another user, or change the address of a patient. This event will provide the widget the opportunity to prevent the change if necessary. The event will include (if possible), the attribute being changed and the tentative new value for the attribute. 
-
-`actionExecuted`: The response to an action. Due to the use of the structured clone algorithm in message passing, function callbacks cannot be passed in `MessageEvents`. Instead the caller must generate a unique `requestId` to accompany each action sent to Dock. Once the action has been executed, Dock will send an `actionExecuted` event to the caller along with the `requestId` of the action. This allows the widget to handle the success or failure of the action.
+`onItemChanged`: Sent whenever an attribute of the selected item has meaningfully changed. In the case of `Task` widgets, this event will be sent whenever an attribute of the selected task changes. In the case of `Patient` widgets, this event will be send whenever an attribute of the selected patient changes. The event will include the item that has changed. NOTE: Dock will not send diffs – it is the responsibility of the widget to determine diffs via the initial onStateChanged event and subsequent onItemChanged events.
 
 ### `dock.actions` Namespace
 
 Executes Dock client-side actions within the UI. Messages are sent to Dock using the same protocol and schema described above. 
 
-Due to the use of the structured clone algorithm in message passing, function callbacks cannot be passed in `MessageEvents`. Instead the caller must generate a unique `requestId` to accompany each action sent to Dock. Once the action has been executed, Dock will send an `actionExecuted` event to the caller along with the `requestId` of the action. This allows the widget to handle the success or failure of the action.
-
 Actions must be one of the following:
 
-`navigate`: Navigate to the specified Task or Patient. Note that an invalid destination will cause Dock to display an error to the user, but otherwise suppress the navigation.
+`navigate`: Navigate to the specified Task or Patient. Note that an invalid destination will cause Dock to display an error to the user, but otherwise suppress the navigation. Params: 
+  - `type`: Must be `patient` or `task`.
+  - `id`: Must be the id of the patient or task to which to navigate.
 
-`setAttribute`: Set the specified attribute of the currently-selected item. In the case of Task widgets, this will set an attribute of the currently-selected task. In the case of Patient widgets, which will set an attribute of the currently-selected patient.
+`setAttribute`: Set the specified attribute of the currently-selected item. In the case of Task widgets, this will set an attribute of the currently-selected task. In the case of Patient widgets, which will set an attribute of the currently-selected patient. Params:
+  - TODO
 
-`showBanner`: Displays a Dock banner message. Useful for communicating feedback to the user in a familiar location.
+`showBanner`: Displays a Dock banner message. Useful for communicating feedback to the user in a familiar location. Params:
+  - `message`: The message text to be displayed.
 
-`showModal`: Displays a Dock modal dialog. 
-
-`logout`: Logout the current user. This will cause Dock to redirect to the Login page.
-
-### `dock.fetch` Namespace
-
-Executes Dock client-side requests to fetch data currently loaded in the Dock UI hosting the widget. TBD.
-
-### `dock.session.store` Namespace (FUTURE)
-
-Provides a secure session store within Dock for session-specific widget state and other widget-related data. TBD.
-
-### `dock.api` Namespace (FUTURE)
-
-Executes Dock server-side API calls restricted to the scope of the currently logged-in user. Used to retrieve server-side data that may not be currently present in the UI. TBD.
-
-### `dock.persistent.store` Namespace (FUTURE)
-
-Provides secure server storage within Dock for user-specific state across all instances of all widgets for the given developer. TBD.
+`showModal`: Displays a Dock modal dialog. The dialog will display `Ok` and `Cancel` buttons and call the specified callback when clicked. Params:
+  - `title`: The title to be displayed.
+  - `message`: The message text to be displayed.
+  - `onOk`: Callback when `Ok` is clicked.
+  - `onCancel`: Callback when `Cancel` is clicked.
 
 ## Widget Registration
 
@@ -156,11 +132,30 @@ The Dock Health API reference is available in three formats - OpenAPI (yaml), Re
   - Redoc: <https://partner-api.dock.health/api-docs/redoc>
   - Swagger: <https://partner-api.dock.health/api-docs/swagger-ui.html>
   
+## Running the Examples
+
+The examples are located in the `examples` folder.
+
+The examples require the installation of two helper binaries in your dev environment:
+
+- serve: <https://www.npmjs.com/package/serve>
+- ngrok: <https://dashboard.ngrok.com>
+
+Both binaries need to be in your path to be accessible by npm. 
+The easiest way to accomplish this is to install `serve` globally using yarn or npx,
+and to install `ngrok` via package manager (e.g., Homebrew for Mac, apt for linux, Chocalatey for Windows).
+
+To run, see the `scripts` section of `package.json`:
+
+- First, build the SDK: `npm run build`
+- To run the standalone localhost example: `npm run echo-local`
+- To run the ngrok example (which gives a better understanding of PostMessage sandboxing): `npm run echo-ngrok`
+  - To run the ngrok example, you must first create an ngrok account and setup ngrok in your dev environment:
+  - <https://dashboard.ngrok.com/get-started/setup>
+
 ## Next Steps
 
-Please see the examples section of this repo for full working examples covering the full widget lifecycle!
-
-Finally, if you have any trouble, please don't hesitate to reach out for help. Either:
+If you have any trouble, please don't hesitate to reach out for help. Either:
 
 1. Create an issue in this repo: <https://github.com/DockHealth/dockhealth-widgets/issues>.
 2. Email us at <mailto://support@dock.health>. 

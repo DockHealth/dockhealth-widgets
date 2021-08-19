@@ -1,2 +1,5 @@
-window.dockHealthWidgetSdk = require('./sdk')
+(function() {
+    window.dockHealthWidgetSdk = require('./sdk')
+})()
+  
   

@@ -1,3 +1,9 @@
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 378:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
 const EMPTY_ARRAY = []
 const EVENT_LISTENER_KEY = 'DOCK_HEALTH_WIDGET_MESSAGE'
 
@@ -56,7 +62,7 @@ class DockHealthWidgetSdk {
 
         return new Promise((resolve, reject) => {
             const requestId = this._generateRequestId()
-            const pjson = require('../package.json')
+            const pjson = __webpack_require__(147)
             const version = pjson.version
 
             // TODO: Send correct origin!
@@ -119,3 +125,53 @@ function init() {
 }
 
 module.exports = init
+
+/***/ }),
+
+/***/ 147:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"name":"dockhealth-widget-sdk","version":"0.0.1","private":false,"repository":"https://github.com/DockHealth/dockhealth-widgets","main":"src/index.js","author":"Dock Health <info@dock.health>","license":"","files":["README.md","dist/","src/"],"devDependencies":{"html-webpack-plugin":"^5.3.2","path":"^0.12.7","webpack":"^5.49.0","webpack-cli":"^4.7.2","webpack-dev-server":"^3.11.2"},"scripts":{"build":"webpack --mode=production","echo-local":"serve .","echo-ngrok":"serve .; ngrok http 5000; ngrok http 5000"}}');
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+(function() {
+    window.dockHealthWidgetSdk = __webpack_require__(378)
+})()
+  
+  
+})();
+
+/******/ })()
+;

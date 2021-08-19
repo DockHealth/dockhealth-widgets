@@ -12,19 +12,17 @@
         <div />
         <textarea id='logId' cols='100' rows='20'></textarea>
         <p>Widget</p>
-        <iframe id='widgetId' height='500px' width='900px' src='widget.html'></iframe>
+        <iframe height='500px' width='900px' src='widget.html'></iframe>
     </body>
     <script>
-        let widget = null
         let log = null
         let sdk = null
 
         window.onload = function () {
             console.log('onLoad')
-            widget = document.getElementById('widgetId').contentWindow
             log = document.getElementById('logId')
             sdk = window.dockHealthWidgetSdk()
-            sdk.onNavigate(handleOnNavigate)
+            sdk._onNavigate(handleOnNavigate)
         }
 
         const handleOnNavigate = (location) => {
