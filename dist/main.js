@@ -132,7 +132,7 @@ module.exports = init
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"dockhealth-widget-sdk","version":"0.0.1","private":false,"repository":"https://github.com/DockHealth/dockhealth-widgets","main":"src/index.js","author":"Dock Health <info@dock.health>","license":"","files":["README.md","dist/","src/"],"devDependencies":{"html-webpack-plugin":"^5.3.2","path":"^0.12.7","webpack":"^5.49.0","webpack-cli":"^4.7.2","webpack-dev-server":"^3.11.2"},"scripts":{"build":"webpack --mode=production","echo-local":"serve .","echo-ngrok":"serve .; ngrok http 5000; ngrok http 5000"}}');
+module.exports = JSON.parse('{"name":"dockhealth-widget-sdk","version":"1.0.0","private":false,"repository":"https://github.com/DockHealth/dockhealth-widgets","main":"dist/main.js","author":"Dock Health <info@dock.health>","license":"","files":["README.md","dist/","src/","examples"],"devDependencies":{"html-webpack-plugin":"^5.3.2","path":"^0.12.7","webpack":"^5.49.0","webpack-cli":"^4.7.2","webpack-dev-server":"^3.11.2"},"scripts":{"build":"webpack --mode=production","echo":"serve ."}}');
 
 /***/ })
 

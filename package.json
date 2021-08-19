@@ -1,15 +1,16 @@
 {
     "name": "dockhealth-widget-sdk",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "private": false,
     "repository": "https://github.com/DockHealth/dockhealth-widgets",
-    "main": "src/index.js",
+    "main": "dist/main.js",
     "author": "Dock Health <info@dock.health>",
     "license": "",
     "files": [
         "README.md",
         "dist/",
-        "src/"
+        "src/",
+        "examples"
     ],
     "devDependencies": {
         "html-webpack-plugin": "^5.3.2",
