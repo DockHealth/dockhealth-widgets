@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>widget.html - Dock Health Widget SDK Echo Example</title>	
+        <meta charset='utf-8'></meta>
+        <script type='module' src ='https://dockhealth.ngrok.io/dist/dockhealth-widget-sdk.js'></script>
+    </head>
+    <body>
+        <button id='fireNavigateButton' onclick='onNavigateClicked()'>Fire Navigate</button>
+        <textarea id='logId' cols='100' rows='20'></textarea>
+    </body>
+    <script>
+        // const dockHealthDomain = 'https://app.dock.health', // Production
+        // const dockHealthDomain = 'https://staging.dockhealth.app', // Staging
+        // const dockHealthDomain = 'https://dev.dockhealth.app', // Development
+        const dockHealthDomain = 'https://dockhealth.ngrok.io' // TESTING -- REMOVE ME!
+
+        let log = null
+        let sdk = null
+
+        window.onload = function () {
+            log = document.getElementById('logId')
+            logMsg('widget.html: onLoad()')
+            
+            sdk = window.dockHealthWidgetSdk({ dockHealthDomain: dockHealthDomain })
+            sdk.onStateChanged(handleOnStateChanged)
+            sdk.onItemChanged(handleOnItemChanged)
+        }
+
+        const handleOnStateChanged = (newState) => {
+            logMsg(`handleOnStateChanged: ${JSON.stringify(newState, null, 2)}`)
+        }
+
+        const handleOnItemChanged = (newItem) => {
+            logMsg(`handleOnItemChanged: ${JSON.stringify(newItem, null, 2)}`)
+        }
+
+        const onNavigateClicked = () => {
+            logMsg('onNavigateClicked')
+            sdk.navigate({ type: 'patient', id: '1234' })
+        }
+
+        const logMsg = (payload) => {
+            console.log(payload)
+            const existing = log.value
+            if (existing) {
+                log.value = existing + '\n' + payload
+            } else {
+                log.value = payload
+            }
+        }
+    </script>
+</html>
