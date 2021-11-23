@@ -62,7 +62,13 @@ Registers a widget with the following payload:
 
 `url`: the full URL to the widget. Required. Must be unique across ALL widgets. Must be https and be accessible over the public internet at the time the POST is made.
 
-`type`: the type of widget. Required. Must be either task or patient. 
+`type`: the type of widget. Required. Must be either TASK or PATIENT. 
+
+`name`: the name to display for the widget in Dock Health patient view. Required. 
+
+`height`: the height of widget. Default: 500 for Patient, 300 for Task
+
+`width`: the width of widget. Default: 900 for Patient, 650 (max) for Task
 
 `verificationUrl`: the full URL of the endpoint that will verify widget authenticity. Must be https, be accessible over the public internet at the time the POST is made, and pass an authentication challenge (see the Authentication section, below). The domain of this endpoint MUST be the same domain of the widget, though it and/or the widget may reside on subdomains of the primary domain. A single verification URL can be used to verify all the widgets hosted by that domain.
 
@@ -132,6 +138,14 @@ The Dock Health API reference is available in three formats - OpenAPI (yaml), Re
   - Redoc: <https://partner-api.dock.health/api-docs/redoc>
   - Swagger: <https://partner-api.dock.health/api-docs/swagger-ui.html>
   
+## Getting Started
+1. Register a widget as described in "Widget Registeration" above
+1. Refer to the widget.html in the examples for setting up your widget
+    - include the provided JS SDK
+    - specify the Dock Health domain for which the widget is registered with
+    - include "onStateChangeClicked" call backs to be notified about the context details like the user who is logged in and the patient selected in Dock
+
+
 ## Running the Examples
 
 The examples are located in the `examples` folder.
