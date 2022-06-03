@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang='en'>
     <head>
-        <title>widget.html - Dock Health Widget SDK Echo Example</title>	
+        <title>widget.html - Dock Health Widget SDK Echo Example</title>
         <meta charset='utf-8'></meta>
+        <!-- Local Testing -->
         <script type='module' src ='https://dockhealth.ngrok.io/dist/dockhealth-widget-sdk.js'></script>
+        <!-- <script type='module' src ='https://github.com/DockHealth/dockhealth-widgets/dist/dockhealth-widget-sdk.js'></script> -->
     </head>
     <body>
+        <button id='fireReadyButton' onclick='onReadyClicked()'>Fire Ready</button>
         <button id='fireNavigateButton' onclick='onNavigateClicked()'>Fire Navigate</button>
         <textarea id='logId' cols='100' rows='20'></textarea>
     </body>
@@ -13,7 +16,7 @@
         // const dockHealthDomain = 'https://app.dock.health', // Production
         // const dockHealthDomain = 'https://staging.dockhealth.app', // Staging
         // const dockHealthDomain = 'https://dev.dockhealth.app', // Development
-        const dockHealthDomain = 'https://dockhealth.ngrok.io' // TESTING -- REMOVE ME!
+        const dockHealthDomain = 'https://dockhealth.ngrok.io' // Local Testing
 
         let log = null
         let sdk = null
@@ -21,7 +24,7 @@
         window.onload = function () {
             log = document.getElementById('logId')
             logMsg('widget.html: onLoad()')
-            
+
             sdk = window.dockHealthWidgetSdk({ dockHealthDomain: dockHealthDomain })
             sdk.onStateChanged(handleOnStateChanged)
             sdk.onItemChanged(handleOnItemChanged)
@@ -33,6 +36,12 @@
 
         const handleOnItemChanged = (newItem) => {
             logMsg(`handleOnItemChanged: ${JSON.stringify(newItem, null, 2)}`)
+        }
+
+        const onReadyClicked = () => {
+            logMsg('onReadyClicked')
+            // MUST send an empty body with the request!
+            sdk.ready({ })
         }
 
         const onNavigateClicked = () => {
