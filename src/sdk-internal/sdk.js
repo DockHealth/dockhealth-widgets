@@ -1,13 +1,14 @@
 class DockHealthWidgetSdkInternal {
     constructor(options = {}) {
-        this._target = options.target 
+        this._target = options.target
         if (!this._target) throw 'Must specify target window.'
-        
+
         this._targetOrigin = options.targetOrigin
         if (!this._targetOrigin || typeof this._targetOrigin !== 'string') throw 'Must specify target origin as a string value.'
 
         this.fireStateChanged = this.fireStateChanged.bind(this)
         this.fireItemChanged = this.fireItemChanged.bind(this)
+        this.onReady = this.onReady.bind(this)
         this.onNavigate = this.onNavigate.bind(this)
 
         this._listeners = new Map()
@@ -30,6 +31,10 @@ class DockHealthWidgetSdkInternal {
         this._sendMessage('onItemChanged', args)
     }
 
+    onReady(callback) {
+        this._addListener('onReady', callback)
+    }
+
     onNavigate(callback) {
         this._addListener('onNavigate', callback)
     }
@@ -44,7 +49,7 @@ class DockHealthWidgetSdkInternal {
 
         const version = this._version
         const requestId = this._generateRequestId()
-        
+
         this._target.postMessage({ eventName, args, requestId, version }, this._targetOrigin)
     }
 
@@ -62,7 +67,7 @@ class DockHealthWidgetSdkInternal {
             try {
                 if (eventName === event.data.eventName) {
                     console.log('Firing listener: ' + eventName)
-                    callback(event.data)    
+                    callback(event.data)
                 }
             } catch (err) {
                 console.error('_receiveMessage: Error: ', err)
@@ -95,7 +100,7 @@ class DockHealthWidgetSdkInternal {
         try {
             if (!domain || typeof domain !== 'string') {
                 return false
-            } 
+            }
             return this._targetOrigin.toLowerCase() === domain.toLowerCase()
         } catch(error) {
             return false
