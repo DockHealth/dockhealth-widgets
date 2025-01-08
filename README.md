@@ -18,11 +18,11 @@ event in Dock, possibly leading to task completion.
  
 ## Widget Types
 
-`Task`: Displayed in drawer. Acts within scope of the current task or subtask. 
-
 `Patient`: Displayed in tab in patient view. Acts within scope of the current patient.
 
-`Workflow`: **TODO**
+`Task`: **Future** Displayed in drawer. Acts within scope of the current task or subtask. 
+
+`Workflow`: **Future** Displayed in workflow drawer. Acts within scope of the current workflow
 
 ## Widget Namespaces
 
